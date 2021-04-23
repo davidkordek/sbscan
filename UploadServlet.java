@@ -19,12 +19,17 @@ public class UploadServlet extends HttpServlet {
     private int maxFileSize = 250 * 1024;
     private int maxMemSize = 20 * 1024;
     private File file ;
+    private Parser parser;
 
     public void init( ){
-        // Get the file location where it would be stored.
         filePath = getServletContext().getInitParameter("file-upload");
+        try {
+            parser = new Parser(filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Get the file location where it would be stored.
     }
-
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, java.io.IOException {
 
@@ -90,6 +95,7 @@ public class UploadServlet extends HttpServlet {
                     }
                     fi.write( file ) ;
                     out.println("Uploaded Filename: " + fileName + "<br>");
+                    parser.parseFile(file,response);
                 }
             }
             out.println("</body>");
