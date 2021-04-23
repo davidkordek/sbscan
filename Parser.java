@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PDFreader {
+public class Parser {
 
     public static void main(String[] args)throws IOException {
 
