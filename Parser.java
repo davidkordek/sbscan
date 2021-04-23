@@ -1,9 +1,10 @@
-package com.example.demo1;
+package com.example.demo3;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.text.PDFTextStripper;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -11,14 +12,17 @@ import java.util.regex.Pattern;
 
 public class Parser {
 
-    public static void main(String[] args)throws IOException {
+    private PDDocument doc;
 
-        //Loading an existing document
-        File file = new File("C:\\Users\\David\\Desktop\\Syllabus.pdf");
-        //load the file into the PDF reader.
-        PDDocument doc = PDDocument.load(file);
+    public Parser(String filePath)throws IOException{
+        File file = new File(filePath);
 
+    }
+
+    public void parseFile(File file, HttpServletResponse response)throws IOException{
+        doc = PDDocument.load(file);
         //converts the PDF into text
+        java.io.PrintWriter out = response.getWriter( );
         PDFTextStripper stripper = new PDFTextStripper();
 
         // StringBuilder to store the extracted text
@@ -32,14 +36,12 @@ public class Parser {
         Pattern p = Pattern.compile("(\\d\\d/\\d\\d)");
         Matcher m = p.matcher(sb);
         while (m.find()){//prints out the matches
-            System.out.println(m.group());
+            out.println(m.group());
+            out.println("</br>");
         }
-
-        //Closing the document
         if (doc != null) {
             doc.close();
         }
-        System.out.println("Finished");
 
     }
 }
